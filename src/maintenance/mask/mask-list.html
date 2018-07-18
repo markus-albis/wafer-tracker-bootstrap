@@ -1,0 +1,32 @@
+<template>
+<div class="container-fluid">
+  <div class="row vertical-align">
+    <h3 class="col-xs-1">${heading}</h3>
+    <a href="/maintenance/masks/new" class="btn btn-link btn-lg">New</a>
+  </div>
+    <!-- Grid definition -->
+  <table ref="masktable" class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Short</th>
+      <th>Device</th>
+      <th>Flat</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody class="cursor-pointer">
+    <tr repeat.for="entity of entities" click.delegate="$parent.open(entity.MaskID)">
+      <td>${entity.MaskID}</td>
+      <td>${entity.MaskName}</td>
+      <td>${entity.MaskNameShortcut}</td>
+      <td>${entity.DeviceName}</td>
+      <td>${entity.Flat}</td>
+      <td>${entity.Description}</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</template>

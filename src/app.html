@@ -1,0 +1,54 @@
+<template>
+  <nav class="navbar navbar-first navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle Navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <span><img style= "width:40px; height:32px"; src="/styles/assets/logo.png"></span>
+        <span style="clear:left">${router.title}</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav nav-tabs navbar-left">
+        <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}" role="presentation">
+          <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="row.href">${row.title}</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-right">
+        <li><a class="navbar-link" href="#">Help</a></li>
+      </ul>
+
+      <ul if.bind="!isAuthenticated" class="nav navbar-right">
+        <li><a class="navbar-link" href="/#/login">Login</a></li>
+      </ul>
+
+      <ul if.bind="isAuthenticated" class="nav  navbar-right">
+        <li><a class="navbar-link" href="/#/logout">Logout</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+
+  <div class="page-host-first">
+    <router-view></router-view>
+  </div>
+
+  <!-- Footer View -->
+<footer md-footer>
+<div class="container-fluid white-text">
+  <ul>
+    <li style="width:300px; display:inline; float:left;">${statusMessage1}</li>
+    <li style="width:300px; display:inline; float:left;">${statusMessage2}</li>
+    <li style="width:300px; display:inline; float:left;">${statusMessage3}</li>
+    <li style="width:500px; display:inline; float:right;">${statusMessage4}</li>
+</ul>
+</div>
+</footer>
+</template>

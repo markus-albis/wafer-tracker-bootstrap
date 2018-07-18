@@ -1,0 +1,517 @@
+// Some  utilities
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Aurelia application styles
+
+.page-host-first {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.page-host-second {
+    margin-left: 20px;
+    margin-right: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+// Base styles
+// --------------------------------------------------
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0; // For input.btn
+  font-weight: @btn-font-weight;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+  border: 1px solid transparent;
+  white-space: nowrap;
+  .button-size(@padding-base-vertical; @padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
+  .user-select(none);
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      .tab-focus();
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &.focus {
+    color: @btn-default-color;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    outline: 0;
+    background-image: none;
+    .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: @cursor-disabled;
+    .opacity(.65);
+    .box-shadow(none);
+  }
+
+  a& {
+    &.disabled,
+    fieldset[disabled] & {
+      pointer-events: none; // Future-proof disabling of clicks on `<a>` elements
+    }
+  }
+}
+
+// Link buttons
+// -------------------------
+
+// Make a button look and behave like a link
+.btn-link {
+  color: @link-color;
+  font-weight: normal;
+  border-radius: 0;
+
+  &,
+  &:active,
+  &.active,
+  &[disabled],
+  fieldset[disabled] & {
+    background-color: transparent;
+    .box-shadow(none);
+  }
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: transparent;
+  }
+  &:hover,
+  &:focus {
+    color: @link-hover-color;
+    text-decoration: @link-hover-decoration;
+    background-color: transparent;
+  }
+  &[disabled],
+  fieldset[disabled] & {
+      color: @btn-link-disabled-color;
+      text-decoration: none;
+    }
+
+}
+
+// Custom navbars
+//===============
+
+// Component alignment
+//
+// Repurpose the pull utilities as their own navbar utilities to avoid specificity
+// issues with parents and chaining. Only do this when the navbar is uncollapsed
+// though so that navbar contents properly stack and align in mobile.
+//
+// Declared after the navbar components to ensure more specificity on the margins.
+
+@media (min-width: @grid-float-breakpoint) {
+  .navbar-left  { .pull-left(); }
+  .navbar-right {
+    .pull-right();
+    margin-right: @navbar-padding-horizontal;
+
+    ~ .navbar-right {
+      margin-right: 10px;
+    }
+  }
+}
+
+// First level navbar
+// =================
+.navbar-first {
+  background-image: url(../assets/headerbg.png);
+  // background-color: @navbar-first-bg;
+  border-color: @navbar-first-border;
+
+  .navbar-brand {
+    float: left;
+    padding: 10px 20px;
+    font-size: @font-size-large;
+    line-height: @line-height-computed;
+    color: @navbar-first-brand-color;
+    &:hover,
+    &:focus {
+      color: @navbar-first-brand-hover-color;
+      background-color: @navbar-first-brand-hover-bg;
+    }
+  }
+
+  .navbar-text {
+    color: @navbar-first-color;
+  }
+
+  .navbar-link {
+    color: @navbar-first-link-color;
+    margin-top: 5px;
+    &:hover {
+      color: @navbar-first-link-hover-color;
+      background-color: @navbar-first-link-hover-bg;
+    }
+  }
+
+  .navbar-nav {
+
+    > li > a {
+      // padding-top:1px;
+      // padding-bottom:1px;
+      // height: 30px;
+      color: @navbar-first-link-color;
+      &:hover,
+      &:focus {
+        color: @navbar-first-link-hover-color;
+        background-color: @navbar-first-link-hover-bg;
+      }
+    }
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-first-link-active-color;
+        background-color: @navbar-first-link-active-bg;
+      }
+    }
+    > .disabled > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-first-link-disabled-color;
+        background-color: @navbar-first-link-disabled-bg;
+      }
+    }
+  }
+
+  // first level navbar tabs
+  .nav-tabs {
+    border-bottom: 1px solid @first-tabs-border-color;
+    margin-top: 8px;
+
+    > li {
+      float: left;
+      // Make the list-items overlay the bottom border
+      margin-bottom: -1px;
+
+
+      // Actual tabs (as links)
+      > a {
+        color: @first-tabs-link-color;
+        margin-right: 2px;
+        line-height: @line-height-base;
+        border: 1px solid transparent;
+        border-radius: @border-radius-base @border-radius-base 0 0;
+        &:hover {
+          color: @first-tabs-active-link-hover-color;
+          background-color: @first-tabs-active-link-hover-bg;
+          border-color: @first-tabs-link-hover-border-color @first-tabs-link-hover-border-color @first-tabs-border-color;
+        }
+      }
+
+      // Active state, and its :hover to override normal :hover
+      &.active > a {
+        &,
+        &:hover,
+        &:focus {
+          color: @first-tabs-active-link-hover-color;
+          background-color: @first-tabs-active-link-hover-bg;
+          border: 1px solid @first-tabs-active-link-hover-border-color;
+          border-bottom-color: transparent;
+          cursor: default;
+        }
+      }
+    }
+    // pulling this in mainly for less shorthand
+    &.nav-justified {
+      .nav-justified();
+      .nav-tabs-justified();
+    }
+  }
+
+  .navbar-toggle {
+    border-color: @navbar-first-toggle-border-color;
+    &:hover,
+    &:focus {
+      background-color: @navbar-first-toggle-hover-bg;
+    }
+    .icon-bar {
+      background-color: @navbar-first-toggle-icon-bar-bg;
+    }
+  }
+
+  .navbar-collapse,
+  .navbar-form {
+    border-color: @navbar-first-border;
+  }
+
+  // Dropdown menu items
+  .navbar-nav {
+    // Remove background color from open dropdown
+    > .open > a {
+      &,
+      &:hover,
+      &:focus {
+        background-color: @navbar-first-link-active-bg;
+        color: @navbar-first-link-active-color;
+      }
+    }
+
+    @media (max-width: @grid-float-breakpoint-max) {
+      // Dropdowns get custom display when collapsed
+      .open .dropdown-menu {
+        > li > a {
+          color: @navbar-first-link-color;
+          &:hover,
+          &:focus {
+            color: @navbar-first-link-hover-color;
+            background-color: @navbar-first-link-hover-bg;
+          }
+        }
+        > .active > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @navbar-first-link-active-color;
+            background-color: @navbar-first-link-active-bg;
+          }
+        }
+        > .disabled > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @navbar-first-link-disabled-color;
+            background-color: @navbar-first-link-disabled-bg;
+          }
+        }
+      }
+    }
+  }
+
+  // Links in navbars
+  //
+  // Add a class to ensure links outside the navbar nav are colored correctly.
+
+  .navbar-link {
+    color: @navbar-first-link-color;
+    &:hover {
+      color: @navbar-default-link-hover-color;
+    }
+  }
+
+  .btn-link {
+    color: @navbar-first-link-color;
+    &:hover,
+    &:focus {
+      color: @navbar-first-link-hover-color;
+    }
+    &[disabled],
+    fieldset[disabled] & {
+      &:hover,
+      &:focus {
+        color: @navbar-first-link-disabled-color;
+      }
+    }
+  }
+}
+
+
+// Second level navbar
+// ===================
+.navbar-second {
+  background-color: @navbar-second-bg;
+  border-color: @navbar-second-border;
+
+  .navbar-brand {
+    color: @navbar-second-brand-color;
+    &:hover,
+    &:focus {
+      color: @navbar-second-brand-hover-color;
+      background-color: @navbar-second-brand-hover-bg;
+    }
+  }
+
+  .navbar-text {
+    color: @navbar-second-color;
+  }
+
+  .navbar-nav {
+    > li > a {
+      color: @navbar-second-link-color;
+
+      &:hover,
+      &:focus {
+        color: @navbar-second-link-hover-color;
+        background-color: @navbar-default-link-hover-bg;
+      }
+    }
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-second-link-active-color;
+        background-color: @navbar-second-link-active-bg;
+      }
+    }
+    > .disabled > a {
+      &,
+      &:hover,
+      &:focus {
+        color: @navbar-second-link-disabled-color;
+        background-color: @navbar-second-link-disabled-bg;
+      }
+    }
+  }
+
+  // Second level navbar tabs
+  .nav-tabs {
+    border-bottom: 1px solid @second-tabs-border-color;
+    margin-top: 10px;
+
+    > li {
+      float: left;
+      // Make the list-items overlay the bottom border
+      margin-bottom: -1px;
+
+
+      // Actual tabs (as links)
+      > a {
+        color: @second-tabs-link-color;
+        margin-right: 2px;
+        line-height: @line-height-base;
+        border: 1px solid transparent;
+        border-radius: @border-radius-base @border-radius-base 0 0;
+        &:hover {
+          color: @second-tabs-active-link-hover-color;
+          border-color: @second-tabs-link-hover-border-color @second-tabs-link-hover-border-color @second-tabs-border-color;
+        }
+      }
+
+      // Active state, and its :hover to override normal :hover
+      &.active > a {
+        &,
+        &:hover,
+        &:focus {
+          color: @second-tabs-active-link-hover-color;
+          background-color: @second-tabs-active-link-hover-bg;
+          border: 1px solid @second-tabs-active-link-hover-border-color;
+          border-bottom-color: transparent;
+          cursor: default;
+        }
+      }
+    }
+    // pulling this in mainly for less shorthand
+    &.nav-justified {
+      .nav-justified();
+      .nav-tabs-justified();
+    }
+  }
+
+  .navbar-toggle {
+    border-color: @navbar-second-toggle-border-color;
+    &:hover,
+    &:focus {
+      background-color: @navbar-second-toggle-hover-bg;
+    }
+    .icon-bar {
+      background-color: @navbar-second-toggle-icon-bar-bg;
+    }
+  }
+
+  .navbar-collapse,
+  .navbar-form {
+    border-color: @navbar-second-border;
+  }
+
+  // Dropdown menu items
+  .navbar-nav {
+    // Remove background color from open dropdown
+    > .open > a {
+      &,
+      &:hover,
+      &:focus {
+        background-color: @navbar-second-link-active-bg;
+        color: @navbar-second-link-active-color;
+      }
+    }
+
+    @media (max-width: @grid-float-breakpoint-max) {
+      // Dropdowns get custom display when collapsed
+      .open .dropdown-menu {
+        > li > a {
+          color: @navbar-second-link-color;
+          &:hover,
+          &:focus {
+            color: @navbar-second-link-hover-color;
+            background-color: @navbar-second-link-hover-bg;
+          }
+        }
+        > .active > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @navbar-second-link-active-color;
+            background-color: @navbar-second-link-active-bg;
+          }
+        }
+        > .disabled > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @navbar-second-link-disabled-color;
+            background-color: @navbar-second-link-disabled-bg;
+          }
+        }
+      }
+    }
+  }
+
+  // Links in navbars
+  //
+  // Add a class to ensure links outside the navbar nav are colored correctly.
+
+  .navbar-link {
+    color: @navbar-second-link-color;
+    &:hover {
+      color: @navbar-second-link-hover-color;
+    }
+  }
+
+  .btn-link {
+    color: @navbar-second-link-color;
+    &:hover,
+    &:focus {
+      color: @navbar-second-link-hover-color;
+    }
+    &[disabled],
+    fieldset[disabled] & {
+      &:hover,
+      &:focus {
+        color: @navbar-second-link-disabled-color;
+      }
+    }
+  }
+}

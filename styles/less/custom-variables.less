@@ -1,0 +1,127 @@
+//
+// Custom Variables
+// --------------------------------------------------
+
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+@brand-primary:                 #084468;
+
+//== Scaffolding
+//
+//## Settings for some of the most global styles.
+
+//** Background color for `<body>`.
+@body-bg:               #fff;
+//** Global text color on `<body>`.
+@text-color:            @gray-dark;
+
+//** Disabled cursor for form controls and buttons.
+@cursor-disabled:                default;
+
+
+//== Scaffolding
+//
+//## Settings for some of the most global styles.
+
+//** Background color for `<body>`.
+@body-bg:               #fff;
+//** Global text color on `<body>`.
+@text-color:            @gray-dark;
+
+//** Global textual link color.
+@link-color:           lighten(@brand-primary, 20%);
+//** Link hover color set via `darken()` function.
+@link-hover-color:      darken(@link-color, 15%);
+//** Link hover decoration.
+@link-hover-decoration: underline;
+
+//
+//== Custom Navbars
+//---------
+
+// Basics of a navbar
+@navbar-height:                    40px;
+@navbar-margin-bottom:             @line-height-computed;
+@navbar-border-radius:             @border-radius-base;
+@navbar-padding-horizontal:        floor((@grid-gutter-width / 2));
+@navbar-padding-vertical:          ((@navbar-height - @line-height-computed) / 2);
+@navbar-collapse-max-height:       340px;
+
+// === First level navbar
+// First level navbar basics
+@navbar-first-color:               #084468;
+@navbar-first-bg:                  #C1D8E6;
+@navbar-first-border:              darken(@navbar-first-bg, 6.5%);
+
+// First level navbar links
+@navbar-first-link-color:                #fff;
+@navbar-first-link-hover-color:          #333;
+@navbar-first-link-hover-bg:             @navbar-first-bg;
+@navbar-first-link-active-color:         #333;
+@navbar-first-link-active-bg:            @navbar-first-bg;
+@navbar-first-link-disabled-color:       #ccc;
+@navbar-first-link-disabled-bg:          transparent;
+
+// First level navbar brand label
+@navbar-first-brand-color:               @navbar-first-link-color;
+@navbar-first-brand-hover-color:         darken(@navbar-first-brand-color, 10%);
+@navbar-first-brand-hover-bg:            transparent;
+
+// First level navbar toggle
+@navbar-first-toggle-hover-bg:           #ddd;
+@navbar-first-toggle-icon-bar-bg:        #888;
+@navbar-first-toggle-border-color:       #ddd;
+
+
+//=== Second level navbar
+// Second level navbar basics
+@navbar-second-color:                      #fff;
+@navbar-second-bg:                         #C1D8E6;
+@navbar-second-border:                     #fff;
+
+// Second level navbar links
+@navbar-second-link-color:                 lighten(@gray-light, 15%);
+@navbar-second-link-hover-color:           #fff;
+@navbar-second-link-hover-bg:              transparent;
+@navbar-second-link-active-color:          @navbar-second-link-hover-color;
+@navbar-second-link-active-bg:             darken(@navbar-second-bg, 10%);
+@navbar-second-link-disabled-color:        #444;
+@navbar-second-link-disabled-bg:           transparent;
+
+// Second level navbar brand label
+@navbar-second-brand-color:                @navbar-second-link-color;
+@navbar-second-brand-hover-color:          #fff;
+@navbar-second-brand-hover-bg:             transparent;
+
+// Second level navbar toggle
+@navbar-second-toggle-hover-bg:            #333;
+@navbar-second-toggle-icon-bar-bg:         #fff;
+@navbar-second-toggle-border-color:        #333;
+
+
+//== First level tabs
+@first-tabs-link-color:                      #fff;
+@first-tabs-border-color:                    transparent;
+
+@first-tabs-link-hover-border-color:          @gray-lighter;
+
+@first-tabs-active-link-hover-bg:             @navbar-first-bg;
+@first-tabs-active-link-hover-color:          @gray-dark;
+@first-tabs-active-link-hover-border-color:   @navbar-first-bg;
+
+@first-tabs-justified-link-border-color:            @navbar-first-bg;
+@first-tabs-justified-active-link-border-color:     @navbar-first-bg;
+
+//== Second level tabs
+@second-tabs-link-color:                      #fff;
+@second-tabs-border-color:                    transparent;
+
+@second-tabs-link-hover-border-color:         #fff;
+
+@second-tabs-active-link-hover-bg:             #fff;
+@second-tabs-active-link-hover-color:          @gray-dark;
+@second-tabs-active-link-hover-border-color:   #fff;
+
+@second-tabs-justified-link-border-color:            #fff;
+@second-tabs-justified-active-link-border-color:     @navbar-second-bg;

@@ -1,0 +1,28 @@
+<template>
+
+  <div class="row" style="margin-top:0px">
+    <div class="col s6">
+      <md-card md-title="Database Migration Tool">
+        <!-- Database Links-->
+          <div style="margin-left:10px; margin-top:10px">Source Database: ${sourceDatabase}</div>
+          <div style="margin-left:10px; margin-top:10px; margin-bottom: 30px;">Target Database:  ${targetDatabase} </div>
+
+         <div>
+           <button md-button="flat: false" click.trigger="start()" style="margin-left: 10px">Start</button>
+        </div>
+      </md-card>
+
+    </div>
+  </div>
+
+  <div class="row" >
+    <div class="col s6">
+      <md-card md-title="Progress Monitor">
+        <p>${progressInfo}</p>
+        <div class="progress progress-striped active">
+          <div class="progress-bar" style="${progress}"</div>
+        </div>
+      </md-card>
+  </div>
+
+</template>
