@@ -74,6 +74,7 @@ System.config({
     "breeze": "npm:breeze-client@1.7.1",
     "charlespockert/aurelia-bs-grid": "github:charlespockert/aurelia-bs-grid@0.0.4",
     "core-js": "npm:core-js@1.2.7",
+    "crossfilter": "npm:crossfilter@1.3.12",
     "css": "github:systemjs/plugin-css@0.1.37",
     "datatables": "github:DataTables/DataTables@1.10.19",
     "font-awesome": "npm:font-awesome@4.6.3",
@@ -610,6 +611,9 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
+    },
+    "npm:crossfilter@1.3.12": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:font-awesome@4.6.3": {
       "css": "github:systemjs/plugin-css@0.1.37"
