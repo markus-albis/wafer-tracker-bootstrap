@@ -1,5 +1,6 @@
 import {inject} from 'aurelia-dependency-injection';
 import crossfilter from 'crossfilter';
+import moment from 'moment';
 import {DataService} from 'services/dataservice';
 import {logger} from 'services/log';
 import {WaferHistory} from './models/waferhistory'
@@ -7,11 +8,11 @@ import {WaferHistory} from './models/waferhistory'
 @inject(DataService)
 export class Home {
 
+
   constructor(dataService){
     this.dataService = dataService;
 
   }
-
 
 activate() {
 
@@ -35,19 +36,42 @@ activate() {
         logger.info("Number of wafer histories returned from database = " + result[6].length);
 
         this.WaferHistories = this.mapWaferHistories(result[6]);
-        // logger.info(this.WaferHistories)
-        this.whx = crossfilter(this.WaferHistories);
-        let locations = this.whx.dimension(function(s) { return s.WaferLocation})
-        let filteredLocations = locations.filter("OSZR-FEOL  / Part 1")
-        // this.print_filter(filteredLocations)
-        let starts = this.whx.dimension(function(s) { return s.StartDate;})
-        let filteredStarts = starts.filter([new Date("2017-07-01"), new Date("2018-06-30")]);
-        this.print_filter(filteredStarts)
-
-
+        this.initializeCrossFilter();
       })
 }
 
+initializeCrossFilter() {
+
+  this.whcx = crossfilter(this.WaferHistories);
+  let locations = this.whcx.dimension(function(s) { return s.WaferLocation})
+  let filteredLocations = locations.filterExact("OSZR-FEOL  / Part 1")
+
+  // Get total wafer starts
+  this.totalWaferStarts = filteredLocations.top(Infinity).length;
+  logger.info("Total WaferStarts: ", this.totalWaferStarts);
+
+  let starts = this.whcx.dimension(function(s) { return s.StartDate;})
+
+  // Get wafer starts of current year
+  let filteredStarts = starts.filterRange([new Date("2018-01-01"), new Date()]);
+  this.yearToDayWaferStarts = filteredStarts.top(Infinity).length;
+  logger.info("Wafer Starts YTD: ", this.yearToDayWaferStarts);
+
+  // Get wafer starts of past 12 months
+  filteredStarts = starts.filterRange([moment().subtract(1, 'year'), moment()]);
+  this.trailingTwelveMonthsWaferStarts = filteredStarts.top(Infinity).length;
+  logger.info("Wafer Starts TTM: ", this.trailingTwelveMonthsWaferStarts);
+
+  // Group wafer starts by months
+  starts.filterAll()
+  let startMonths = this.whcx.dimension(function(s) { return moment(s.StartDate).format("YYYY.MM");})
+  this.waferStartsGroupedByMonth = startMonths.group().all();
+  this.print_filter("this.waferStartsGroupedByMonth");
+
+}
+
+
+// Create flat wafer history models
 mapWaferHistories(results) {
   let whs = [];
   for (let r of results) {

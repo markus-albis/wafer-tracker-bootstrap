@@ -1,33 +1,35 @@
 <template>
+  <require from="./widgets/summary.html"></require>
 
   <md-card md-title="Dashboard">
-    
+
     <!-- Summary Widgets-->
     <div class="row">
       <!-- Slot 1-->
       <div class="col s2">
-
+          <summary title="Total Wafer Starts" value=${totalWaferStarts}></summary>
       </div>
       <!-- Slot 2-->
       <div class="col s2">
-
+          <summary title="Wafer Starts YTD" value=${yearToDayWaferStarts}></summary>
       </div>
       <!-- Slot 3-->
       <div class="col s2">
-
+          <summary title="Wafer Starts 12 Months" value=${trailingTwelveMonthsWaferStarts}></summary>
       </div>
       <!-- Slot 4-->
       <div class="col s2">
-
+          <summary title="WIP FEOL" value=${WIPFEOL}></summary>
       </div>
       <!-- Slot 5-->
       <div class="col s2">
-
+          <summary title="WIP FEOL" value=${WIPBEOL}></summary>
       </div>
       <!-- Slot 6-->
       <div class="col s2">
-
+          <summary title="Wafer Yield YTD" value=${ytdWaferYield}></summary>
       </div>
+
     </div>
 
 
