@@ -6,8 +6,8 @@ export default {
   fileSystemService: "http://localhost:9090/api/filesystem",
   databaseMigrationService: "http://localhost:9090/api/databasemigration",
   systemTestService: "http://localhost:9090/api/systemtest",
-  primaryColor: '#009688',  // teal 500
-  accentColor: '#ec407a',   // pink 500
-  errorColor: '#c62828',
+  primaryColor: '#283593',  // indigo 500
+  accentColor: '#D500F9',   // purple A400
+  errorColor: '#FF1744',
   pageSize: 100,
 };

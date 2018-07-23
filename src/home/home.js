@@ -1,5 +1,7 @@
 import {inject} from 'aurelia-dependency-injection';
 import crossfilter from 'crossfilter';
+import * as dc from 'dc';
+// import * as d3 from 'd3';
 import moment from 'moment';
 import {DataService} from 'services/dataservice';
 import {logger} from 'services/log';
@@ -64,9 +66,23 @@ initializeCrossFilter() {
 
   // Group wafer starts by months
   starts.filterAll()
-  let startMonths = this.whcx.dimension(function(s) { return moment(s.StartDate).format("YYYY.MM");})
-  this.waferStartsGroupedByMonth = startMonths.group().all();
-  this.print_filter("this.waferStartsGroupedByMonth");
+  this.startMonths = this.whcx.dimension(function(s) { return dc.d3.timeMonth(s.StartDate)});
+  this.waferStartsByMonth = this.startMonths.group();
+  this.print_filter("this.waferStartsByMonth");
+  // let firstMonth = this.startMonths.bottom(1)[0].StartDate;
+  // let lastMonth = this.startMonthss.top(1)[0].StartDate;
+  // logger.info(firstMonth, lastMonth);
+  let waferStartsChart = dc.barChart("#chart_container1")
+  waferStartsChart.width(600).height(300)
+  .margins({top:10, right:10, bottom:30, left:30})
+  .dimension(this.startMonths)
+  .group(this.waferStartsByMonth)
+  .x(dc.d3.scaleTime())
+  .elasticX(true)
+  .round(dc.d3.timeMonth.round)
+  .alwaysUseRounding(true)
+  .xUnits(dc.d3.timeMonths);
+  dc.renderAll();
 
 }
 
@@ -76,6 +92,7 @@ mapWaferHistories(results) {
   let whs = [];
   for (let r of results) {
     let wh = new WaferHistory();
+    wh.StartMonth = moment(r.StartDate).format("YYYY.MM")
     wh.StartDate=r.StartDate;
     wh.StopDate=r.StopDate;
 

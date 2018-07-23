@@ -19,6 +19,9 @@ export class App {
 
   constructor(http){
     this.http = http;
+    this.primaryColor = settings.primaryColor;
+    this.accentColor = settings.accentColor;
+    this.errorColor = settings.errorColor;
   }
 
 

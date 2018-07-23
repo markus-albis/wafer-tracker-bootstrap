@@ -1,5 +1,5 @@
 export class WaferHistory {
-  
+
   StartDate;
   StopDate;
   Wafer;
