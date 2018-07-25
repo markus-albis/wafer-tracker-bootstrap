@@ -11,34 +11,65 @@
       </div>
       <!-- Slot 2-->
       <div class="col s2">
-          <summary title="Wafer Starts YTD" value=${yearToDayWaferStarts}></summary>
+          <summary title="Total WIP" value=${totalWIP}></summary>
       </div>
       <!-- Slot 3-->
       <div class="col s2">
-          <summary title="Wafer Starts 12 Months" value=${trailingTwelveMonthsWaferStarts}></summary>
+          <summary title="Total On-Hold" value=${OnHold}></summary>
       </div>
       <!-- Slot 4-->
       <div class="col s2">
-          <summary title="WIP FEOL" value=${WIPFEOL}></summary>
+          <summary title="Wafer Starts Current Year" value=${currentYearWaferStarts}></summary>
       </div>
       <!-- Slot 5-->
       <div class="col s2">
-          <summary title="WIP FEOL" value=${WIPBEOL}></summary>
+          <summary title="Wafer Starts Last 12 Months" value=${ltmWaferStarts}></summary>
       </div>
       <!-- Slot 6-->
       <div class="col s2">
-          <summary title="Wafer Yield YTD" value=${ytdWaferYield}></summary>
+          <summary title="Wafer Yield Last 12 Month" value="${ltmWaferYield} %"></summary>
+      </div>
+    </div>
+
+    <!-- Titles and Selectors-->
+    <div class="row">
+      <div class="col s2">
+        <h5>Monthly Wafer Starts</h5>
+      </div>
+      <div class="col s2">
+        <div style = "margin-left: -20px; margin-top:-15px; width: 150px;">
+          <select style="float: left;" md-select value.two-way="selectedTimePeriod" change.delegate="timePeriodSelectionChanged()"> >
+            <option repeat.for="timePeriod of timePeriods" model.bind="timePeriod">${timePeriod}</option>
+         </select>
+      </div>
+      </div>
+      <div class="col s4">
+        <h5>Wafer Failures</h5>
+      </div>
+      <div class="col s2">
+        <h5>Summary</h5>
       </div>
     </div>
 
 
     <!-- Weekly Wafer starts-->
     <div class="row">
-      <div class="col s12">
-
-            <div id="chart_container1"></div>
-
-      <div>
+      <div class="col s4">
+        <div id="chart_container1"></div>
+      </div>
+      <div class="col s4">
+        <div id="chart_container2"></div>
+      </div>
+      <div class="col s2">
+        <table style="margin-left: 10px; margin-top: 0px; width: 65%">
+          <tr><td>Wafer Starts:</td><td>${sWaferStart}</td></tr>
+          <tr><td>Work in Progress:</td><td>${sWIP}</td></tr>
+          <tr><td>On-Hold:</td><td>${sOnHold}</td></tr>
+          <tr><td>Passed:</td><td>${sPassed}</td></tr>
+          <tr><td>Failed:</td><td>${sFailed}</td></tr>
+          <tr><td>Yield:</td><td>${sYield}</td></tr>
+        <table>
+      </div>
     </div>
 
 

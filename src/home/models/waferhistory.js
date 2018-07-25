@@ -6,6 +6,6 @@ export class WaferHistory {
   Lot;
   WaferLocation;
   WaferState;
-  Failure;
+  FailureCategory;
 
 }
