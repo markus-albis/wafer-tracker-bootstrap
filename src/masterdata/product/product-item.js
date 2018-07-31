@@ -7,13 +7,13 @@ import {AppRouter} from 'aurelia-router';
 export class ProductItem extends ItemViewModel {
 
   constructor(router,service) {
-    super('productnames',router,service);
+    super('products',router,service);
   }
 
   get title() {
     if (this.entity.ProductNameId <= 0) {
       return 'New Product';
     }
-    return `Product #${this.entity.ProductNameId}`;
+    return `Product #${this.entity.ProductId}`;
   }
 }

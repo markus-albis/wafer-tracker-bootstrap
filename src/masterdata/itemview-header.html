@@ -1,0 +1,11 @@
+<template>
+  <div class="row ">
+    <div class ="col s2">
+      <h3>${title}</h3>
+    </div>
+    <div class="col s2">
+      <button md-button="disabled.bind: !hasChanges" click.delegate="save()" style="margin-top: 25px;">Save</button>
+      <button md-button click.delegate="cancel()" style="margin-top: 25px; margin-left: 20px;">Cancel</button>
+    </div>
+  </div>
+</template>

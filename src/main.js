@@ -16,6 +16,7 @@ export function configure(aurelia) {
       .developmentLogging()
       .plugin('aurelia-animator-css')
       .plugin('aurelia-breeze')
+      .plugin('aurelia-table')
       .plugin('aurelia-materialize-bridge', bridge => bridge.useAll())
 
 

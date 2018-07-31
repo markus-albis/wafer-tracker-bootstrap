@@ -1,0 +1,40 @@
+<template>
+<md-navbar md-fixed=true>
+
+  <a md-sidenav-collapse="ref.bind: sideNav;" class="left hide-on-large-only" style="cursor: pointer; padding: 0 10px;"><i class="material-icons">menu</i></a>
+
+  <a class="brand-logo left" href="#" style="margin-left: 50px">
+    <span><img style= "width:40px; height:32px"; src="/styles/assets/logo.png"></span>
+    <span class="flow-text" style="margin-left:10px">${router.title}</span>
+  </a>
+
+  <ul id="nav-mobile" class="left hide-on-med-and-down" style="margin-left: 400px">
+    <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}" role="presentation">
+      <a href.bind="row.href">${row.title}</a>
+    </li>
+  </ul>
+
+  <ul class="right" style="margin-right:0px">
+    <li><a md-dropdown="activates: dropdown3; below-origin: true;"><i class="left material-icons">more_vert</i></a></li>
+  </ul>
+
+</md-navbar>
+
+<md-sidenav md-close-on-click="true" view-model.ref="sideNav">
+  <ul>
+    <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}" role="presentation">
+      <a href.bind="row.href">${row.title}</a>
+    </li>
+  </ul>
+</md-sidenav>
+
+<ul id="dropdown3" class="dropdown-menu">
+  <li><a href="#">Action</a></li>
+  <li><a href="#">Help</a></li>
+  <li><a href="#/about">About</a></li>
+  <li class="divider"></li>
+  <li><a href="#">Login</a></li>
+</ul>
+
+
+</template>

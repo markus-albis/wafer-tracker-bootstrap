@@ -1,3 +1,5 @@
+import {logger} from 'services/log';
+
 export class ListViewModel {
   router;
   route;
@@ -17,15 +19,15 @@ export class ListViewModel {
 
   load() {
     this.isLoading = true;
-    this.service.getPage(this.pageIndex)
-      .then(result => {
-        this.entities = result.entities;
-        this.isLoading = false;
-      });
+  }
+
+  rowSelected(id){
+    logger.info("Row selected: ", id)
+    this.open(id);
   }
 
   open(id) {
-    console.log("Navigating to: /maintenance/"+ this.route + '/' + id);
-    this.router.navigate("/maintenance/"+ this.route + '/' + id);
+    logger.info("Navigating to:" + this.route + '/' + id);
+    this.router.navigate("#/masterdata/" + this.route + '/' + id);
   }
 }

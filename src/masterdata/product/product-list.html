@@ -1,0 +1,78 @@
+<template>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col s2">
+        <h3>${heading}</h3>
+      </div>
+      <div class="col s2">
+        <a  href="#/masterdata/products/new" md-button="flat: false" style="margin-top: 25px; margin-left: 0px">New</a>
+     </div>
+     <div class="col s2">
+       <md-input md-label="Enter filter text" md-value.bind="filters[0].value" md-disablesd="true"></md-input>
+    </div>
+    </div>
+
+    <div class="row">
+      <div class="col s8">
+        <table class="filter-table" aurelia-table="data.bind: entities; display-data.bind: $displayData; current-page.bind: currentPage; page-size.bind: pageSize; filters.bind: filters; total-items.bind: totalItems; ">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th aut-sort="key: ProductCode">Code</th>
+              <th aut-sort="key: ProductName">Name</th>
+              <th>Short</th>
+              <th>Acronym</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody class="cursor-pointer">
+            <tr repeat.for="entity of $displayData" aut-select="row.bind: entity" select.delegate="rowSelected(entity.ProductId)">
+              <td>${entity.ProductId}</td>
+              <td >${entity.ProductCode}</td>
+              <td >${entity.ProductName}</td>
+              <td>${entity.ShortName}</td>
+              <td>${entity.Acronym}</td>
+              <td>${entity.Description}</td>
+            </tr>
+          </tbody>
+        </table>
+      </diV>
+    </div>
+
+    <div class="row">
+      <div class="col s7">
+        <aut-pagination current-page.bind="currentPage" page-size.bind="pageSize" total-items.bind="totalItems"
+                               pagination-size.bind="10" boundary-links.bind="true">
+
+                <template replace-part="pagination">
+                   <ul class="custom-pagination" hide.bind="hideSinglePage && totalPages === 1">
+                       <li>
+                           <a aria-label="Previous" click.delegate="previousPage()"
+                              class-name.bind="currentPage === 1 ? 'disabled' : ''">
+                               <span aria-hidden="true">«</span>
+                           </a>
+                       </li>
+
+                       <li repeat.for="page of displayPages">
+                           <a click.delegate="selectPage(page.value)" class-name.bind="currentPage === page.value ? 'active' : ''">
+                               ${page.title}
+                           </a>
+                       </li>
+
+                       <li>
+                           <a aria-label="Next" click.delegate="nextPage()"
+                              class-name.bind="currentPage === totalPages ? 'disabled' : ''">
+                               <span aria-hidden="true">»</span>
+                           </a>
+                       </li>
+
+                   </ul>
+               </template>
+        </aut-pagination>
+      </div>
+      <div class="col s1" style="margin-left: 10px; margin-top: 20px">Total Products: ${totalItems}</div>
+    </div>
+
+
+  </div>
+</template>

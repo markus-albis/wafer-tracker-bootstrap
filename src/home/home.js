@@ -4,25 +4,26 @@ import * as dc from 'dc';
 import moment from 'moment';
 import {_} from 'underscore';
 import {DataService} from 'services/dataservice';
+import {StatsService} from 'services/stats-service';
 import {logger} from 'services/log';
 import {WaferHistory} from './models/waferhistory'
 
 
-@inject(DataService)
+@inject(DataService, StatsService)
 export class Home {
 
   timePeriods = ["All", "Current Year", "Last 12 Months", "Last 24 Months", "Last 36 Months"];
   selectedTimePeriod = "";
 
 
-  constructor(dataService){
+  constructor(dataService, statsService){
     this.dataService = dataService;
-
+    this.statsService = statsService;
   }
 
 activate() {
 
-  this.selectedTimePeriod = "All"
+  this.selectedTimePeriod = "Last 12 Months"
 
   //Get data
   let op1 = Promise.resolve(this.getLots());
@@ -111,17 +112,22 @@ initializeDashboard() {
 
   // Initialize Wafer Start Chart
   this.waferStartsChart = dc.barChart("#chart_container1")
-  this.waferStartsChart.width(600).height(300)
+  this.waferStartsChart.width(400).height(300)
   .margins({top:10, right:10, bottom:70, left:40})
   .dimension(startMonths)
   .group(waferStartsByMonth)
   .x(dc.d3.scaleTime())
+  .ordinalColors(["#283593"])
   .elasticX(true)
   .round(dc.d3.timeMonth.round)
   .alwaysUseRounding(true)
   .xUnits(dc.d3.timeMonths)
-  .xAxisLabel("Calendar Months")
-  .yAxisLabel("Wafers per Months");
+  .yAxisLabel("Wafers per Months")
+  .gap(3)
+  .renderlet(function(chart)
+    {chart
+    .selectAll("g.x text")
+    .attr("transform", "translate(-20,30) rotate(-65)")});
 
   this.waferStartsChart.render();
 
@@ -132,11 +138,12 @@ initializeDashboard() {
 
   // Initialize Wafer Failure Chart
   this.waferFailuresChart = dc.barChart("#chart_container2")
-  this.waferFailuresChart.width(600).height(300)
+  this.waferFailuresChart.width(400).height(300)
   .margins({top:10, right:10, bottom:80, left:40})
   .dimension(waferFailures)
   .group(filtered_group)
   .x(dc.d3.scaleBand())
+  .ordinalColors(["#283593"])
   .elasticY(true)
   .xUnits(dc.units.ordinal)
   .yAxisLabel("Failure Count")
@@ -171,6 +178,39 @@ initializeDashboard() {
 
   // Calculate yield for last twelve month
   this.sYield = Math.round(100*this.sPassed / (this.sWaferStart - this.sWIP - this.sOnHold));
+
+  // Calculate TTM Yield for past 24 months
+  // loop over past 24 months
+  let data = [];
+  for (let i = 24; i > 0; i--) {
+    let periodStart = moment().subtract("month", (i + 12));
+    let periodEnd = moment().subtract("month", i);
+    this.statsService.resetFilters();
+    this.statsService.filterWaferStarts(periodStart, periodEnd);
+    let periodYield = this.statsService.getWaferYield();
+    // logger.info("Period / Yield:", periodEnd.format("YYYY-MM"), periodYield)
+    let entry = {Period: periodEnd, yield: periodYield};
+    data.push(entry);
+  }
+  //logger.info(data);
+  let ycx = crossfilter(data);
+  this.periodDimension = ycx.dimension(function(d) {return d.Period});
+  //this.print_filter("this.periodDimension")
+  let periodGroup = this.periodDimension.group().reduceSum(function(d) {return d.yield})
+
+
+  this.waferYieldChart = dc.lineChart("#chart_container0");
+  this.waferYieldChart.width(400).height(300)
+  .margins({top:10, right:10, bottom:80, left:40})
+  .dimension(this.periodDimension)
+  .group(periodGroup)
+  .x(dc.d3.scaleTime())
+  .y(dc.d3.scaleLinear().domain([40, 100]))
+  .elasticX(true)
+  .round(dc.d3.timeMonth.round)
+  .yAxisLabel("TTM wafer Yield")
+  .ordinalColors(["#283593"]);
+  this.waferYieldChart.render();
 
 }
 

@@ -10,32 +10,27 @@ export class Products extends ListViewModel{
 
   heading = 'Products';
   entities=[]
+  pageSize = 15;
 
-  constructor(router,dataservice) {
-    super('productnames', router, dataservice)
-    this.dataservice = dataservice;
+  filters = [
+      {value: '', keys: ['ProductName', 'ProductCode']}
+  ];
+
+
+  constructor(router,dataService) {
+    super('products', router, dataService)
+    this.dataService = dataService;
   }
 
   activate(){
     this.getProducts();
   }
 
-  // attached(){
-  //   $(this.producttable).dataTable();
-  // }
-
   getProducts() {
     this.isLoading = true;
-    this.dataservice.getProducts()
+    this.dataService.getProducts()
       .then(result => {
         this.entities = result.results;
         this.isLoading = false;})
-      .then(() => {
-        $(this.producttable).dataTable({
-          info: true,
-          lengthChange: false,
-          searching: true
-        });
-        });
   }
 }

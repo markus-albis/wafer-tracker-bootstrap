@@ -9,7 +9,7 @@ main {
 }
 
 .page-host {
-  margin-left: 10px;
+  margin-left: 0px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -19,6 +19,22 @@ main {
     margin-right: 20px;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+.nav-second {
+  height: 45px;
+}
+
+.nav-second ul a {
+  height: 45px;
+}
+
+.nav-second ul a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-second ul li.active {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .text-area-map {
@@ -233,13 +249,20 @@ select:focus {
 }
 
 /* Custom pagination for aurelia table */
+.custom-pagination {
+    margin-top: 20px;
+}
+
 .ul.custom-pagination {
   display: inline-block;
   padding: 0;
   margin: 0;
 }
 
-ul.custom-pagination li {display: inline;}
+ul.custom-pagination li {
+  display: inline;
+    padding: 8px 16px;
+}
 
 ul.custom-pagination li a {
 
@@ -253,7 +276,7 @@ ul.custom-pagination li a {
 
 ul.custom-pagination li a.active {
   cursor: grab;
-  background-color: #009688;
+  background-color: #D500F9;
   color: white;
 }
 

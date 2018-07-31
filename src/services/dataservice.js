@@ -59,7 +59,7 @@ export class DataService {
 
   // Used to create a new entity
   createNew(type) {
-      console.log(type);
+      logger.info(type);
       return {
         entity: this.manager.createEntity(type),
         entityManager: this.manager

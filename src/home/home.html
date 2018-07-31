@@ -1,7 +1,7 @@
 <template>
   <require from="./widgets/summary.html"></require>
 
-  <md-card md-title="Dashboard">
+  <md-card md-title="Statistics Summary">
 
     <!-- Summary Widgets-->
     <div class="row">
@@ -33,31 +33,38 @@
 
     <!-- Titles and Selectors-->
     <div class="row">
-      <div class="col s2">
-        <h5>Monthly Wafer Starts</h5>
+      <div class="col s3">
+        <h5>Wafer Yield (TTM)</h5>
       </div>
-      <div class="col s2">
-        <div style = "margin-left: -20px; margin-top:-15px; width: 150px;">
+      <div class="col s3">
+          <h5>Monthly Wafer Starts</h5>
+          <span>(last 12 months)</span>
+        <!-- <div style = "margin-left: 0px; margin-top:-15px; width: 150px;">
           <select style="float: left;" md-select value.two-way="selectedTimePeriod" change.delegate="timePeriodSelectionChanged()"> >
             <option repeat.for="timePeriod of timePeriods" model.bind="timePeriod">${timePeriod}</option>
          </select>
+      </div> -->
       </div>
-      </div>
-      <div class="col s4">
+      <div class="col s3">
         <h5>Wafer Failures</h5>
+        <span>(last 12 months)</span>
       </div>
       <div class="col s2">
         <h5>Summary</h5>
+        <span>(last 12 months)</span>
       </div>
     </div>
 
 
-    <!-- Weekly Wafer starts-->
+    <!-- Monthly Wafer Starts and Failures-->
     <div class="row">
-      <div class="col s4">
+      <div class="col s3">
+        <div id="chart_container0"></div>
+      </div>
+      <div class="col s3">
         <div id="chart_container1"></div>
       </div>
-      <div class="col s4">
+      <div class="col s3">
         <div id="chart_container2"></div>
       </div>
       <div class="col s2">
@@ -72,8 +79,9 @@
       </div>
     </div>
 
-
-
   </md-card>
+
+
+
 
 </template>

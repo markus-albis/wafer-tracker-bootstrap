@@ -2857,7 +2857,7 @@ ul.staggered-list li {
 }
 
 .page-footer {
-  padding-top: 5px;
+  padding-top: 0px;
   padding-bottom: 5px;
   padding-left: 10px;
   background-color: #ee6e73;
@@ -4301,7 +4301,8 @@ nav ul li {
 }
 
 nav ul li.active {
-  background-color: rgba(0, 0, 0, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  background-color: #8c9eff;
 }
 
 nav ul a {
@@ -4325,7 +4326,7 @@ nav ul a.btn > .material-icons, nav ul a.btn-large > .material-icons, nav ul a.b
 }
 
 nav ul a:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 nav ul.left {

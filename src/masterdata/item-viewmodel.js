@@ -48,11 +48,11 @@ export class ItemViewModel {
     this.entityManager.saveChanges();
     toastr.options.positionClass = "toast-bottom-right";
     toastr.success( "Changes saved.", "Saving to database");
-    this.router.navigate("/maintenance/"+ this.route);
+    this.router.navigate("#/masterdata/"+ this.route);
   }
 
   cancel() {
     this.entityManager.rejectChanges();
-    this.router.navigate("/maintenance/"+ this.route);
+    this.router.navigate("#/masterdata/"+ this.route);
   }
 }

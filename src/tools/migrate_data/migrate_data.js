@@ -13,8 +13,8 @@ targetDatabase="Local instance of MySQL56";
 sourceDb = {name: "", type: "", file:null};
 targetDb = "";
 // tables= ["EpiType", "EpiSupplier", "WaferType", "WaferSize", "WaferSupplier", "ProductFamiliy", "LotNumber", "Mask", "ProductName", "Wafer", "WaferStatus", "Technician", "WaferLocation", "ProcessGroup", "ProcessSequence", "Layer", "SPC_Parameter", "SPC_Acquisition", "SPC_Data", "SPC_Data_Type", "Line" ];
-// tables= ["EpiType", "EpiSupplier", "WaferType", "WaferSize", "WaferSupplier", "ProductFamiliy", "LotNumber", "Mask", "ProductName", "Technician", "WaferLocation", "Wafer", ];
-tables=["WaferStatus"]
+tables= ["EpiType", "EpiSupplier", "WaferType", "WaferSize", "WaferSupplier", "ProductFamiliy", "LotNumber", "Mask", "ProductName", "Technician", "WaferLocation", "Wafer", "WaferStatus"];
+// tables=["WaferStatus"]
 progress="width: 0%";
 progress="width: 0%";
 progressInfo = "";
@@ -47,6 +47,7 @@ progressPercent = 0;
         }
         promise = promise.then(() => {
         this.progressInfo = "Database migration successfully completed";
+        this.progressPercent = 100;
         this.progress="width: 100%";
       });
   }

@@ -27,18 +27,19 @@ export class App {
 
   configureRouter(config,router){
     config.title='Wafer Tracker';
-    config.options.pushState = true;
+    // config.options.pushState = true;
     config.map([
       {route: ['','home'], name: 'home', moduleId: './home/home', nav: true, title: 'Home'},
-      {route: ['template'], name: 'template', moduleId: './template/template', nav: true, title: 'Template'},
+      {route: 'template', name: 'template', moduleId: './template/template', nav: false, title: 'Template'},
       {route: 'tracker', name: 'tracker', moduleId: './tracker/tracker', nav: true, title: 'Tracker'},
-      {route: 'workflow', name: 'workflow', moduleId: './workflow', nav: true, title: 'Workflow'},
-      {route: 'actions', name: 'actions', moduleId: './actions', nav: true, title: 'Actions'},
+      {route: 'kanban', name: 'kanban', moduleId: './kanban/kanban', nav: true, title: 'Kanban'},
       {route: 'spc', name: 'spc', moduleId: './spc', nav: true, title: 'SPC'},
       {route: 'reports', name: 'reports', moduleId: './reports', nav: true, title: 'Reports'},
-      {route: 'metrics', name: 'metrics', moduleId: './metrics', nav: true, title: 'Metrics'},
-      {route: 'maintenance', name: 'maintenance', moduleId: './maintenance/maintenance', nav: true, title: 'Maintenance'},
+      {route: 'metrics', name: 'metrics', moduleId: './metrics/metrics', nav: true, title: 'Metrics'},
+      {route: 'peditor', name: 'peditor', moduleId: './peditor/peditor', nav: true, title: 'Process Editor'},
+      {route: 'masterdata', name: 'masterdata', moduleId: './masterdata/masterdata', nav: true, title: 'Master Data'},
       {route: 'tools', name: 'tools', moduleId: './tools/tools', nav: true, title: 'Tools'},
+      {route: 'about', name: 'about', moduleId: './about/about', nav: false, title: 'About'},
       {route: 'login', name: 'login', moduleId: './login', nav: false, title: 'Login'},
       {route: 'logout', name: 'logout', moduleId: './logout', nav: false, title: 'Logout'}
       // {route: '', redirect: 'template'}

@@ -1,0 +1,17 @@
+<template>
+  <div class="container-fluid">
+    <form submit.delegate="save()" novalidate>
+      <!-- header -->
+      <compose view="../itemview-header.html"></compose>
+
+      <div class="form-group">
+        <label for="Description">Wafer State</label>
+        <input type="text" class="form-control" id="Description" placeholder="Wafer State ( e.g. On-Hold)" value.bind="entity.Description">
+      </div>
+      <div class="form-group">
+          <label for="SortOrder">Sort Order</label>
+          <input type="text" class="form-control" id="SortOrder" placeholder="Sort Order" value.bind="entity.SortOrder">
+      </div>
+    </form>
+  </div>
+</template>
