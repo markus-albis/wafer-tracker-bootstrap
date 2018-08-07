@@ -4,16 +4,16 @@ import {DataService}  from 'services/dataservice';
 import {AppRouter} from 'aurelia-router';
 
 @inject(AppRouter,DataService)
-export class ProductItem extends ItemViewModel {
+export class FailureCategoryItem extends ItemViewModel {
 
   constructor(router,service) {
-    super('products',router,service);
+    super('failurecategories',router,service);
   }
 
   get title() {
-    if (this.entity.ProductId <= 0) {
-      return 'New Product';
+    if (this.entity.FailureCategoryId <= 0) {
+      return 'New Failure Category';
     }
-    return `Product #${this.entity.ProductId}`;
+    return `Failure Category #${this.entity.FailureCategoryId}`;
   }
 }

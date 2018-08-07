@@ -2,6 +2,7 @@ import {inject} from 'aurelia-dependency-injection';
 import crossfilter from 'crossfilter';
 import * as dc from 'dc';
 import moment from 'moment';
+import {_} from 'underscore';
 import {DataService} from 'services/dataservice';
 import {logger} from 'services/log';
 import {WaferHistory} from 'models/waferhistory'
@@ -9,14 +10,37 @@ import {WaferHistory} from 'models/waferhistory'
 @inject(DataService)
 export class StatsService {
 
-  waferHistoryCrossfilter = null;
-  waferLocationDimension = null;
-  startDateDimension = null;
-  waferStateDimension = null;
+  // Crossfilters
+  whcx = null;      // Wafer history crossfilter
+  tfcx = null;      // Time filtered wafer history crossfilter
+
+  // Crossfilter dimensions
+  whcxWaferLocationDimension = null;  // Crossfilter dimension on all wafer locations
+  whcxStartDateDimension = null;      // Crossfilter dimension on all start dates
+  whcxWaferStateDimension = null;     // Crossfilter dimension on all wafer states
+
+  tfcxStartMonthDimension = null;       // Time filtered crossfilter dimension on all start dates rounded to first of month for month grouping (see d3-time)
+  tfcxWaferLocationDimension = null;    // Time filtered crossfilter dimension on all wafer locations
+  tfcxWaferStateDimension = null;       // Time filtered crossfilter dimension on all wafer getWaferStates
+  tfcxFailureCategoryDimension = null;  // Time filtered crossfilter dimension on all wafer failure categories
+
+  // Some global parmeters
+  totalWaferStarts = 0;   // Total number of wafer starts
+  totalWIP = 0;           // Current total of work-in-progress wafers
+  totalOnHold = 0;        // Current total of on-hold wafers
+  ltmWaferStarts = 0;     // Wafer starts of last twelve month
+  ltmWIP = 0;             // Work in progress wafers started in the last tweleve month
+  ltmOnHold = 0;          // On-hold wafres started in the last twelve month
+  ltmPassed = 0;          // Passed wafers started in the last twelve month
+  ltmFailed = 0;          // Passed wafers started in the last twelve month
+  cYWaferStarts = 0;      // Wafer starts of current calendar year
+  ltmWaferYield = 0;      // Wafer yield of past twelve month
+
+  hasData = false
 
   constructor(dataService) {
     this.dataService = dataService;
-    this.loadData();
+    // this.loadData();
   }
 
   // Bulk data load
@@ -29,7 +53,7 @@ export class StatsService {
     let op5 = Promise.resolve(this.getWaferStates());
     let op6 = Promise.resolve(this.getWafers());
     let op7 = Promise.resolve(this.getWaferHistories());
-    Promise.all([op1,op2, op3, op4, op5, op6, op7])
+    return Promise.all([op1,op2, op3, op4, op5, op6, op7])
         .then(result =>  {
           logger.info("Number of lots returned from database = " + result[0].length);
           logger.info("Number of products returned from database = " + result[1].length);
@@ -40,57 +64,105 @@ export class StatsService {
           logger.info("Number of wafer histories returned from database = " + result[6].length);
           this.waferHistories = this.mapWaferHistories(result[6]);
           this.initService();
+          this.extractGlobals();
+          this.hasData = true;
         });
   }
 
   // Define some common crossfilters and dimensions
   initService() {
-    this.whcx = crossfilter(this.waferHistories);
-    this.waferHistoryCrossfilter = this.whcx;                                    // Create a crossfilter for wafer histories
-    this.waferLocationDimension = this.whcx.dimension(function(s) { return s.WaferLocation})            // Define a dimension for wafer locations
-    this.startDateDimension = this.whcx.dimension(function(s) { return s.StartDate;})                   // Define a dimension for wafer start dates
-    this.waferStateDimension = this.whcx.dimension(function(ws) {return ws.WaferState});                // Define a dimension for wafer states
-  };
-
-
-  filterWaferStarts(fromDate, toDate) {
-    let filteredLocations = this.waferLocationDimension.filterExact("OSZR-FEOL  / Part 1");   // Apply filter to WaferLocations dimension
-    let filteredStarts = this.startDateDimension.filterRange([fromDate, toDate]);            // Apply filter to StartDate dimension
-    let waferStarts = this.startDateDimension.top(Infinity).length;
+    this.whcx = crossfilter(this.waferHistories);                                                          // Create a crossfilter for wafer histories
+    this.whcxWaferLocationDimension = this.whcx.dimension(function(s) { return s.WaferLocation})            // Define a dimension for wafer locations
+    this.whcxStartDateDimension = this.whcx.dimension(function(s) { return s.StartDate;})                   // Define a dimension for wafer start dates
+    this.whcxWaferStateDimension = this.whcx.dimension(function(ws) {return ws.WaferState});                // Define a dimension for wafer states
   }
 
-  filterWaferHistoriesByLocationAndPeriod(location, fromDate, toDate) {
-    let filteredLocations = this.waferLocationDimension.filterExact(location);                // Apply filter to WaferLocations dimension
-    let filteredStarts = this.startDateDimension.filterRange([fromDate, toDate]);             // Apply filter to StartDate dimension
+  extractGlobals() {
+    // Get total wafer starts
+    let filteredLocations = this.whcxWaferLocationDimension.filterExact("OSZR-FEOL  / Part 1");   // Apply filter to WaferLocations dimension
+    this.totalWaferStarts = filteredLocations.top(Infinity).length;
+    // Get wafer starts of current year
+    let filteredStarts = this.whcxStartDateDimension.filterRange([moment().startOf('year'), moment()]);
+    this.cYWaferStarts = filteredStarts.top(Infinity).length;
+    // Get wafer starts of last 12 months
+    this.whcxStartDateDimension.filterAll()
+    filteredStarts = this.whcxStartDateDimension.filterRange([moment().subtract(1, 'year'), moment()]);
+    this.ltmWaferStarts = filteredStarts.top(Infinity).length;
+    // // Get total WIP
+    this.whcxStartDateDimension.filterAll()
+    let filteredWaferStates = this.whcxWaferStateDimension.filterExact("WIP");
+    this.totalWIP = filteredWaferStates.top(Infinity).length;
+    // Get total On-hold wafers
+    this.whcxWaferStateDimension.filterAll()
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("On-Hold");
+    this.totalOnHold = filteredWaferStates.top(Infinity).length;
+    // Get some paramaters for last twelve month
+    this.whcxStartDateDimension.filterAll()
+    this.whcxWaferStateDimension.filterAll()
+    filteredStarts = this.whcxStartDateDimension.filterRange([moment().subtract(1, 'year'), moment()]);
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("WIP");
+    this.ltmWIP = filteredWaferStates.top(Infinity).length;
+    this.whcxWaferStateDimension.filterAll()
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("On-Hold");
+    this.ltmOnHold = filteredWaferStates.top(Infinity).length;
+    this.whcxWaferStateDimension.filterAll()
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("Passed");
+    this.ltmPassed = filteredWaferStates.top(Infinity).length;
+    this.whcxWaferStateDimension.filterAll()
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("Failed");
+    this.ltmFailed = filteredWaferStates.top(Infinity).length;
+    // Calculate yield for last twelve month
+    this.ltmWaferYield = Math.round(100*this.ltmPassed / (this.ltmWaferStarts - this.ltmWIP - this.ltmOnHold));
+  }
+
+  filterWaferStarts(fromDate, toDate) {
+    let filteredLocations = this.whcxWaferLocationDimension.filterExact("OSZR-FEOL  / Part 1");   // Apply filter to WaferLocations dimension
+    let filteredStarts = this.whcxStartDateDimension.filterRange([fromDate, toDate]);            // Apply filter to StartDate dimension
+    let waferStarts = this.whcxStartDateDimension.top(Infinity).length;
   }
 
   resetFilters() {
-    this.waferLocationDimension.filterAll();
-    this.startDateDimension.filterAll();
-    this.waferStateDimension.filterAll();
+    this.whcxWaferLocationDimension.filterAll();
+    this.whcxStartDateDimension.filterAll();
+    this.whcxWaferStateDimension.filterAll();
   }
 
+  filterStartLocation() {
+    let filteredLocations = this.tfcxWaferLocationDimension.filterExact("OSZR-FEOL  / Part 1");   // Apply filter to WaferLocations dimension
+  }
 
+  filterWaferHistories(fromDate, toDate) {
+    this.timeFilteredWaferHistories = _.filter(this.waferHistories, function(w) {return (w.StartDate >= fromDate && w.StartDate < toDate)});
+    this.tfcx = crossfilter(this.timeFilteredWaferHistories);
+    this.tfcxWaferLocationDimension = this.tfcx.dimension(function(s) {return s.WaferLocation});            // Define a dimension for wafer locations
+    this.tfcxStartMonthDimension = this.tfcx.dimension(function(s) {return dc.d3.timeMonth(s.StartDate)});  // Define a dimension for wafer start month
+    this.tfcxFailureCategoryDimension = this.tfcx.dimension(function(s) {return s.FailureCategory});             // Define a dimension for failure category
+  }
+
+  resetWaferHistories() {
+    this.whcxWaferLocationDimension.filterAll();
+    this.whcxStartMonthDimension.filterAll();
+  }
+
+  // Wafer yield calculation used by clients for the calculation of trailing wafer yield values
   getWaferYield() {
-
     // Get Wafer Starts
-    let waferStarts = this.startDateDimension.top(Infinity).length;
+    let waferStarts = this.whcxStartDateDimension.top(Infinity).length;
     // Get WIP
-    let filteredWaferStates = this.waferStateDimension.filterExact("WIP");
-    let wip = this.waferStateDimension.top(Infinity).length;
+    let filteredWaferStates = this.whcxWaferStateDimension.filterExact("WIP");
+    let wip = filteredWaferStates.top(Infinity).length;
     // Get On-hold wafers
-    this.waferStateDimension.filterAll();
-    filteredWaferStates = this.waferStateDimension.filterExact("On-Hold");
-    let onHold = this.waferStateDimension.top(Infinity).length;
+    this.whcxWaferStateDimension.filterAll();
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("On-Hold");
+    let onHold = filteredWaferStates.top(Infinity).length;
     // Get passed wafers
-    this.waferStateDimension.filterAll();
-    filteredWaferStates = this.waferStateDimension.filterExact("Passed");
-    let passed = this.waferStateDimension.top(Infinity).length;
+    this.whcxWaferStateDimension.filterAll();
+    filteredWaferStates = this.whcxWaferStateDimension.filterExact("Passed");
+    let passed = filteredWaferStates.top(Infinity).length;
 
     // logger.info("WaferStarts/Passed/WIP/OnHold/", waferStarts, passed,wip,onHold)
     // Calculate yield for last twelve month
     return  Math.round(100 * passed / (waferStarts - wip- onHold));
-
   }
 
   // Utility functions

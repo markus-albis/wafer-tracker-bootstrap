@@ -19,10 +19,6 @@ export function configure(aurelia) {
       .plugin('aurelia-table')
       .plugin('aurelia-materialize-bridge', bridge => bridge.useAll())
 
-
-
-
-
     aurelia.start().then(a => a.setRoot());
 
 

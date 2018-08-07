@@ -10,15 +10,15 @@ main {
 
 .page-host {
   margin-left: 0px;
-    overflow-x: hidden;
-    overflow-y: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .page-host-second {
     margin-left: 20px;
     margin-right: 20px;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 .nav-second {
