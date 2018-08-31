@@ -23,6 +23,7 @@ export class StatsService {
   tfcxWaferLocationDimension = null;    // Time filtered crossfilter dimension on all wafer locations
   tfcxWaferStateDimension = null;       // Time filtered crossfilter dimension on all wafer getWaferStates
   tfcxFailureCategoryDimension = null;  // Time filtered crossfilter dimension on all wafer failure categories
+  tfcxProductDimension = null;          // Time filtered crossfilter dimension on all wafer products
 
   // Some global parmeters
   totalWaferStarts = 0;   // Total number of wafer starts
@@ -71,7 +72,7 @@ export class StatsService {
 
   // Define some common crossfilters and dimensions
   initService() {
-    this.whcx = crossfilter(this.waferHistories);                                                          // Create a crossfilter for wafer histories
+    this.whcx = crossfilter(this.waferHistories);                                                           // Create a crossfilter for wafer histories
     this.whcxWaferLocationDimension = this.whcx.dimension(function(s) { return s.WaferLocation})            // Define a dimension for wafer locations
     this.whcxStartDateDimension = this.whcx.dimension(function(s) { return s.StartDate;})                   // Define a dimension for wafer start dates
     this.whcxWaferStateDimension = this.whcx.dimension(function(ws) {return ws.WaferState});                // Define a dimension for wafer states
@@ -86,7 +87,7 @@ export class StatsService {
     this.cYWaferStarts = filteredStarts.top(Infinity).length;
     // Get wafer starts of last 12 months
     this.whcxStartDateDimension.filterAll()
-    filteredStarts = this.whcxStartDateDimension.filterRange([moment().subtract(1, 'year'), moment()]);
+    filteredStarts = this.whcxStartDateDimension.filterRange([moment().startOf("months").subtract(1, 'year'), moment().startOf("months")]);
     this.ltmWaferStarts = filteredStarts.top(Infinity).length;
     // // Get total WIP
     this.whcxStartDateDimension.filterAll()
@@ -99,7 +100,7 @@ export class StatsService {
     // Get some paramaters for last twelve month
     this.whcxStartDateDimension.filterAll()
     this.whcxWaferStateDimension.filterAll()
-    filteredStarts = this.whcxStartDateDimension.filterRange([moment().subtract(1, 'year'), moment()]);
+    filteredStarts = this.whcxStartDateDimension.filterRange([moment().startOf("months").subtract(1, 'year'), moment().startOf("months")]);
     filteredWaferStates = this.whcxWaferStateDimension.filterExact("WIP");
     this.ltmWIP = filteredWaferStates.top(Infinity).length;
     this.whcxWaferStateDimension.filterAll()
@@ -136,12 +137,15 @@ export class StatsService {
     this.tfcx = crossfilter(this.timeFilteredWaferHistories);
     this.tfcxWaferLocationDimension = this.tfcx.dimension(function(s) {return s.WaferLocation});            // Define a dimension for wafer locations
     this.tfcxStartMonthDimension = this.tfcx.dimension(function(s) {return dc.d3.timeMonth(s.StartDate)});  // Define a dimension for wafer start month
-    this.tfcxFailureCategoryDimension = this.tfcx.dimension(function(s) {return s.FailureCategory});             // Define a dimension for failure category
+    this.tfcxFailureCategoryDimension = this.tfcx.dimension(function(s) {return s.FailureCategory});        // Define a dimension for failure category
+    this.tfcxWaferStateDimension = this.tfcx.dimension(function(s) {return s.WaferState});                  // Define a dimension for failure category
+    this.tfcxProductDimension = this.tfcx.dimension(function(s) {return s.Product});                        // Define a dimension for product
   }
 
   resetWaferHistories() {
-    this.whcxWaferLocationDimension.filterAll();
-    this.whcxStartMonthDimension.filterAll();
+    this.tfcxWaferLocationDimension.filterAll();
+    this.tfcxStartMonthDimension.filterAll();
+    this.tfcxWaferStateDimension.filterAll();
   }
 
   // Wafer yield calculation used by clients for the calculation of trailing wafer yield values
@@ -187,6 +191,11 @@ export class StatsService {
           wh.Lot = r.Wafer.Lot.LotNumber;
         } else {
           wh.Lot = "Undefined"
+        }
+        if (r.Wafer.Product != null) {
+          wh.Product = r.Wafer.Product.ShortName;
+        } else {
+          wh.Product = "Undefined"
         }
         if (r.Wafer.WaferState != null) {
           wh.WaferState = r.Wafer.WaferState.Description;

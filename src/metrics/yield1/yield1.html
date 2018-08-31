@@ -1,71 +1,81 @@
 <template>
 
-  <div class="row" style="margin-top:50px">
+  <!-- <div class="row">
+    <div class="col s3">
+      <div style="margin-left: 0px; margin-top:-25px;">
+        <select md-select="label: Select time period; disabled: true" value.bind="selectedTimePeriod" change.delegate="timePeriodeSelectionChanged()">
+          <option repeat.for="timePeriod of timePeriods" model.bind="timePeriod">${timePeriod}</option>
+        </select>
+      </div>
+    </div>
+  </div> -->
 
+  <div class="row" style="margin-top:40px">
 
-  <div class="col s6">
+    <div class="col s6">
 
-    <div class="row">
-      <div class="col s3">
-        <div style="margin-left: 0px; margin-top:-25px;">
-          <select md-select="label: Select time period; disabled: true" value.bind="selectedTimePeriod" change.delegate="timePeriodeSelectionChanged()">
-            <option repeat.for="timePeriod of timePeriods" model.bind="timePeriod">${timePeriod}</option>
-          </select>
+      <div class="row">
+        <div class="col s6">
+          <div class="chart-title">Monthly Wafer Starts</div>
+          <div class="chart-subtitle">from ${fromDate} to ${toDate}</div>
+          <div id="metrics_container1"></div>
+        </div>
+        <div class="col s6">
+          <div class="chart-title">Wafer Starts by Product</div>
+          <div class="chart-subtitle">from ${fromDate} to ${toDate}</div>
+          <div id="metrics_container2"></div>
         </div>
       </div>
-    </div>
 
-
-    <div class="row">
-      <div class="col s6">
-        <h5>Monthly Wafer Starts</h5>
-        <span>from MM.YYYY to MM.YYYY</span>
-        <div id="metrics_container1"></div>
+      <div class="row">
+        <div class="col s6">
+          <div class="chart-title">Wafer Failures</div>
+          <div class="chart-subtitle">from ${fromDate} to ${toDate}</div>
+          <div id="metrics_container3"></div>
+        </div>
+        <div class="col s6">
+          <div class="chart-title">Summary</div>
+          <div class="chart-subtitle">from ${fromDate} to ${toDate}</div>
+          <table style="margin-left: 20px; margin-top: 20px; width: 65%">
+            <tr><td>Wafer Starts:</td><td>${sWaferStarts}</td></tr>
+            <tr><td>Products:</td><td>${sProducts}</td></tr>
+            <tr><td>Work in Progress:</td><td>${sWIP}</td></tr>
+            <tr><td>On-Hold:</td><td>${sOnHold}</td></tr>
+            <tr><td>Passed:</td><td>${sPassed}</td></tr>
+            <tr><td>Failed:</td><td>${sFailed}</td></tr>
+            <tr><td>Yield:</td><td>${sYield}</td></tr>
+          </table>
+        </div>
       </div>
-      <div class="col s6">
-        <h5>Wafer Starts by Product</h5>
-        <span>from MM.YYYY to MM.YYYY</span>
-        <div id="chart_container2"></div>
-      </div>
-    </div>
-
-
-    <div class="row">
-      <div class="col s6">
-        <h5>Wafer Failures</h5>
-        <span>from MM.YYYY to MM.YYYY</span>
-        <div id="chart_container3"></div>
-      </div>
-      <div class="col s6">
-        <h5>Summary</h5>
-        <span>from MM.YYYY to MM.YYYY</span>
-        <table style="margin-left: 0px; margin-top: 30px; width: 65%">
-          <tr><td>Wafer Starts:</td><td>${sWaferStart}</td></tr>
-          <tr><td>Work in Progress:</td><td>${sWIP}</td></tr>
-          <tr><td>On-Hold:</td><td>${sOnHold}</td></tr>
-          <tr><td>Passed:</td><td>${sPassed}</td></tr>
-          <tr><td>Failed:</td><td>${sFailed}</td></tr>
-          <tr><td>Yield:</td><td>${sYield}</td></tr>
-        <table>
-      </div>
-    </div>
-
-  </div>
-
-
-
-  <div class="col s6">
-
-    <div class="row">
 
     </div>
 
+    <div class="col s6">
 
-    <div class="row">
+      <table class="filter-table" aurelia-table="data.bind: wafers; display-data.bind: $displayData;">
+        <thead>
+          <tr>
+            <th>Wafer</th>
+            <th>Product</th>
+            <th>Lot</th>
+            <th>StartDate</th>
+            <th>State</th>
+            <th>Failure</th>
+          </tr>
+        </thead>
+        <tbody class="cursor-pointer">
+          <tr repeat.for="wafer of $displayData" aut-select="row.bind: wafer" select.delegate="rowSelected(entity.ProductId)">
+            <td>${wafer.Wafer}</td>
+            <td>${wafer.Product}</td>
+            <td>${wafer.Lot}</td>
+            <td>${wafer.StartDate}</td>
+            <td>${wafer.WaferState}</td>
+            <td>${wafer.FailureCategory}</td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
-
-  </div>
 
 
   </div>

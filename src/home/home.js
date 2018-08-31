@@ -14,7 +14,6 @@ export class Home {
   timePeriods = ["All", "Current Year", "Last 12 Months", "Last 24 Months", "Last 36 Months"];
   selectedTimePeriod = "";
 
-
   constructor(statsService){
     this.statsService = statsService;
   }
@@ -42,33 +41,40 @@ export class Home {
     this.OnHold = this.statsService.totalOnHold;
 
     // Initialize Monthly Wafer Starts Chart
-    let periodStart = moment().subtract("month", 12);
-    let periodEnd = moment();
+    let periodStart = moment().startOf("months").subtract("month", 12);
+    let periodEnd = moment().startOf("months");
+    let minDate = moment(periodStart).subtract(2, "weeks");
+    let maxDate = moment(periodEnd).add(2, "weeks");
+
     this.statsService.filterWaferHistories(periodStart, periodEnd);     // Filter wafer histories to selected time period
     this.statsService.filterStartLocation();                            // Only wafer starts
+
     let dimension1 = this.statsService.tfcxStartMonthDimension;
-    let group1 = dimension1.group();
+    let group1 = this.statsService.tfcxStartMonthDimension.group();
+
+    logger.info(dimension1.top(Infinity));
     logger.info(group1.top(Infinity));
+
     dc.config.defaultColors(dc.d3.schemeBlues[4]);
     this.waferStartsChart = dc.barChart("#chart_container1")
     this.waferStartsChart.width(400).height(300)
     .margins({top:10, right:10, bottom:70, left:40})
     .dimension(dimension1)
     .group(group1)
-    .x(dc.d3.scaleTime())
+    .x(dc.d3.scaleTime().domain([minDate, maxDate]))
     .ordinalColors(["#283593"])
-    .elasticX(true)
+    //.elasticX(true)
     .round(dc.d3.timeMonth.round)
     .alwaysUseRounding(true)
     .xUnits(dc.d3.timeMonths)
     .yAxisLabel("Wafers per Months")
-    .gap(3)
+    .gap(2)
     .on("renderlet", function(chart){
       chart.selectAll("g.x text").attr("transform", "translate(-20,30) rotate(-65)")});
     this.waferStartsChart.render();
 
     // Initialize Wafer Failure Chart
-    let waferFailures = this.statsService.tfcxFailureCategoryDimension
+    let waferFailures = this.statsService.tfcxFailureCategoryDimension;
     let wafersGroupedByFailure = this.statsService.tfcxFailureCategoryDimension.group();
     let filtered_group = this.remove_NoFailures(wafersGroupedByFailure);
 
