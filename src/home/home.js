@@ -95,10 +95,10 @@ export class Home {
 
     this.waferFailuresChart.render();
 
-    // Calculate TTM Yield for past 24 months
+    // Calculate TTM Yield for past 36 months
     // loop over past 24 months
     let data = [];
-    for (let i = 24; i > 0; i--) {
+    for (let i = 36; i > 0; i--) {
       let periodStart = moment().subtract("month", (i + 12));
       let periodEnd = moment().subtract("month", i);
       this.statsService.resetFilters();
@@ -125,7 +125,9 @@ export class Home {
     .elasticX(true)
     .round(dc.d3.timeMonth.round)
     .yAxisLabel("TTM wafer Yield")
-    .ordinalColors(["#283593"]);
+    .ordinalColors(["#283593"])
+    .on("renderlet", function(chart){
+      chart.selectAll("g.x text").attr("transform", "translate(-20,30) rotate(-65)")});
     this.waferYieldChart.render();
 
   }
