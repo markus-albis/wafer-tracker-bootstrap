@@ -36,7 +36,7 @@ export class App {
       {route: 'spc', name: 'spc', moduleId: './spc', nav: true, title: 'SPC'},
       {route: 'reports', name: 'reports', moduleId: './reports', nav: true, title: 'Reports'},
       {route: 'metrics', name: 'metrics', moduleId: './metrics/metrics', nav: true, title: 'Metrics'},
-      {route: 'peditor', name: 'peditor', moduleId: './peditor/peditor', nav: true, title: 'Process Editor'},
+      {route: 'editor', name: 'editor', moduleId: './editors/editors', nav: true, title: 'Editors'},
       {route: 'masterdata', name: 'masterdata', moduleId: './masterdata/masterdata', nav: true, title: 'Master Data'},
       {route: 'tools', name: 'tools', moduleId: './tools/tools', nav: true, title: 'Tools'},
       {route: 'about', name: 'about', moduleId: './about/about', nav: false, title: 'About'},

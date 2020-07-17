@@ -6,6 +6,10 @@ export default {
   fileSystemService: "http://localhost:9090/api/filesystem",
   databaseMigrationService: "http://localhost:9090/api/databasemigration",
   systemTestService: "http://localhost:9090/api/systemtest",
+  // serviceName: "http://vs-wiki01.albisopto.com:9090/breeze/WaferTracker",
+  // fileSystemService: "http://vs-wiki01.albisopto.com:9090/api/filesystem",
+  // databaseMigrationService: "http://vs-wiki01.albisopto.com:9090/api/databasemigration",
+  // systemTestService: "http://vs-wiki01.albisopto.com:9090/api/systemtest",
   primaryColor: '#283593',  // indigo 500
   accentColor: '#D500F9',   // purple A400
   errorColor: '#FF1744',
