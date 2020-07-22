@@ -8,6 +8,11 @@ export class DataService {
   serviceName = settings.serviceName;
   manager = new breeze.EntityManager(this.serviceName);
 
+  getFabSpecs() {
+    var query = breeze.EntityQuery.from("FabSpecs");
+    return this.manager.executeQuery(query);
+  }
+
   getFailureCategories() {
     var query = breeze.EntityQuery.from("FailureCategories");
     return this.manager.executeQuery(query);
@@ -23,8 +28,18 @@ export class DataService {
     return this.manager.executeQuery(query);
   }
 
+  getProcesses() {
+    var query = breeze.EntityQuery.from("Processes");
+    return this.manager.executeQuery(query);
+  }
+
   getProducts() {
     var query = breeze.EntityQuery.from("Products");
+    return this.manager.executeQuery(query);
+  }
+
+  getSubProcesses() {
+    var query = breeze.EntityQuery.from("SubProcesses");
     return this.manager.executeQuery(query);
   }
 

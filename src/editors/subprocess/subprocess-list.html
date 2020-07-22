@@ -1,0 +1,74 @@
+<template>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col s3">
+        <h3>${heading}</h3>
+      </div>
+      <div class="col s2">
+        <a  href="#/editors/subprocess/new" md-button="flat: false" style="margin-top: 25px; margin-left: 0px">New</a>
+     </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col s8">
+        <table class="filter-table" aurelia-table="data.bind: entities; display-data.bind: $displayData; current-page.bind: currentPage; page-size.bind: pageSize; total-items.bind: totalItems; ">
+          <thead>
+            <tr>
+              <th>SubProcess</th>
+              <th >SubProcess Name</th>
+              <th >SubProcess Title</th>
+              <th >Description</th>
+              <th >Default Text</th>
+            </tr>
+          </thead>
+          <tbody class="cursor-pointer">
+            <tr repeat.for="entity of $displayData" aut-select="row.bind: entity" select.delegate="rowSelected(entity.SubProcessId)">
+              <td>${entity.SubProcessId}</td>
+              <td >${entity.SubProcessName}</td>
+              <td >${entity.SubProcessTitle}</td>
+              <td >${entity.Description}</td>
+              <td >Select row to view or edit default text</td>
+            </tr>
+          </tbody>
+        </table>
+      </diV>
+    </div>
+
+    <div class="row">
+      <div class="col s3">
+        <aut-pagination current-page.bind="currentPage" page-size.bind="pageSize" total-items.bind="totalItems"
+                               pagination-size.bind="20" boundary-links.bind="true">
+
+                <template replace-part="pagination">
+                   <ul class="custom-pagination" hide.bind="hideSinglePage && totalPages === 1">
+                       <li>
+                           <a aria-label="Previous" click.delegate="previousPage()"
+                              class-name.bind="currentPage === 1 ? 'disabled' : ''">
+                               <span aria-hidden="true">«</span>
+                           </a>
+                       </li>
+
+                       <li repeat.for="page of displayPages">
+                           <a click.delegate="selectPage(page.value)" class-name.bind="currentPage === page.value ? 'active' : ''">
+                               ${page.title}
+                           </a>
+                       </li>
+
+                       <li>
+                           <a aria-label="Next" click.delegate="nextPage()"
+                              class-name.bind="currentPage === totalPages ? 'disabled' : ''">
+                               <span aria-hidden="true">»</span>
+                           </a>
+                       </li>
+
+                   </ul>
+               </template>
+        </aut-pagination>
+      </div>
+      <div class="col s2" style="margin-left: 10px; margin-top: 20px">Total SubProcesses: ${totalItems}</div>
+    </div>
+
+
+  </div>
+</template>

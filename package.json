@@ -111,6 +111,7 @@
       "ms-signalr-client": "npm:ms-signalr-client@^2.2.7",
       "numeral": "npm:numeral@^1.5.3",
       "paulvanbladel/aureliauth": "github:paulvanbladel/aurelia-auth@^0.9.2",
+      "showdown": "npm:showdown@^1.9.1",
       "store.js": "npm:store.js@^1.0.4",
       "toastr": "github:CodeSeven/toastr@^2.1.2",
       "underscore": "npm:underscore@^1.8.3"
@@ -137,6 +138,7 @@
   },
   "dependencies": {
     "arrive": "^2.4.1",
-    "conventional-changelog": "^1.1.7"
+    "conventional-changelog": "^1.1.7",
+    "showdown": "^1.9.1"
   }
 }

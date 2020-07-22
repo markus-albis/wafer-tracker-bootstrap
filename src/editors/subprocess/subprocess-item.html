@@ -1,0 +1,51 @@
+<template>
+  <div class="container-fluid">
+    <form submit.delegate="save()" novalidate>
+      <!-- header -->
+      <compose view="../itemview-header.html"></compose>
+
+      <!-- Name and Title-->
+      <div class="row" >
+        <div class="col s4">
+          <div class="form-group">
+            <label for="Name">SubProcess Name</label>
+            <input type="text" class="form-control" id="Description" placeholder="SubProcess Name" value.bind="entity.SubProcessName">
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="form-group">
+            <label for="Title">SubProcess Title</label>
+            <input type="text" class="form-control" id="Description" placeholder="SubProcess Title" value.bind="entity.SubProcessTitle">
+          </div>
+        </div>
+      </div>
+
+      <!-- Description-->
+      <div class="row" >
+        <div class="col s8">
+          <div class="form-group">
+            <label for="Remark">Description</label>
+            <input type="text" class="form-control" id="Remark" placeholder="Description" value.bind="entity.Description">
+          </div>
+        </div>
+      </div>
+
+      <!-- Default Text-->
+      <div class="row">
+        <div class="col s4">
+          <div class="form-group">
+            <label for="ta1">Default Text</label>
+            <textarea id="ta1" value.bind="entity.DefaultText" class="materialize-textarea" rows="20" style="height: auto; border-bottom:none;"></textarea>  
+          </div>
+        </div>
+        <div class="col s4" style="margin-left: 20px;">
+          <div class="form-group">
+            <label>As Printed</label>
+            <div id="tb1" innerHTML.bind="PrintText | sanitizeHTML
+            "></div>  
+          </div>
+        </div>
+    </div>
+    </form>
+  </div>
+</template>
