@@ -1,4 +1,5 @@
 import toastr from 'toastr';
+import $ from 'jquery';
 
 export class ItemViewModel {
   route;

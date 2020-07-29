@@ -46,6 +46,7 @@ export class StatsService {
 
   // Bulk data load
   loadData(){
+    
     //Get data
     let op1 = Promise.resolve(this.getLots());
     let op2 = Promise.resolve(this.getProducts());

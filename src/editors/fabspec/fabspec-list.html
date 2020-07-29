@@ -5,7 +5,7 @@
         <h3>${heading}</h3>
       </div>
       <div class="col s2">
-        <a  href="#/editors/fabspecs/new" md-button="flat: false" style="margin-top: 25px; margin-left: 0px">New</a>
+        <a  href="#/editors/fabspec/new" md-button="flat: false" style="margin-top: 25px; margin-left: 0px">New</a>
      </div>
     </div>
 
@@ -16,22 +16,18 @@
             <tr>
               <th>FabSpec</th>
               <th >Document Identification</th>
-              <th >Description</th>
               <th >Product</th>
               <th >Owner</th>
               <th >State</th>
-              <th >Current Release</th>
             </tr>
           </thead>
           <tbody class="cursor-pointer">
             <tr repeat.for="entity of $displayData" aut-select="row.bind: entity" select.delegate="rowSelected(entity.FabSpecId)">
               <td>${entity.FabSpecId}</td>
               <td >${entity.FabSpecDocumentId}</td>
-              <td >${entity.Description}</td>
-              <td >${entity.Product_ProductId}</td>
-              <td >${entity.Product_ProductId}</td>
-              <td >${entity.FabSpecState_FabSpecStateId}</td>
-              <td >${entity.FabSpecState_FabSpecStateId}</td>
+              <td >${entity.Product.ProductCode}</td>
+              <td >${entity.Product.ProductOwner.Name}</td>
+              <td >${entity.FabSpecState.Description}</td>
             </tr>
           </tbody>
         </table>

@@ -1,17 +1,62 @@
 <template>
   <div class="container-fluid">
     <form submit.delegate="save()" novalidate>
-      <!-- header -->
-      <compose view="../itemview-header.html"></compose>
 
-      <div class="form-group">
-        <label for="Description">Failure Category</label>
-        <input type="text" class="form-control" id="Description" placeholder="Failure Category ( e.g. On-Hold)" value.bind="entity.Description">
+      <!-- Custom header-->
+      <div class="row ">
+        <div class ="col s4">
+          <h3>${title}</h3>
+          <b>${item}</b>
+        </div>
+        <div class="col s2">
+          <button md-button="disabled.bind: !hasChanges" click.delegate="save()" style="margin-top: 25px;">Save</button>
+          <button md-button click.delegate="cancel()" style="margin-top: 25px; margin-left: 20px;">Cancel</button>
+        </div>
       </div>
-      <div class="form-group">
-          <label for="Remark">Remark</label>
-          <input type="text" class="form-control" id="Remark" placeholder="Remark" value.bind="entity.Remark">
+
+      <!-- Fab Spec Info-->
+      <div class="row ">
+        <div class ="col s8">
+            <div style="float:left;">Revision: 2.1</div>
+            <div style="float:left; margin-left: 30px;" >Product: ${entity.Product.ProductCode}</div>
+            <div style="float:left; margin-left: 30px; " >Product Owner: ${entity.Product.ProductOwner.Name}</div>
+            <div style="float:left; margin-left: 30px; ">State: ${entity.FabSpecState.Description}</div>
+            <div style="float:left; margin-left: 30px;">Release Date: 2020-07-24</div>
+        </div>
       </div>
+
+      <!--Fab Spec Content-->
+      <div class="row ">
+        <!-- Process Sequence-->
+        <div class ="col s2">
+          <b>Process Sequence</b>
+          <md-card >
+            <ul ref="processlist" style="height:500px;">
+              <li class.bind = "psm.IsSelected ? 'highlight' : '' " click.delegate="selectProcess(psm.Process.ProcessId)" repeat.for="psm of processModels" style="margin-bottom: 4px;"><p  style="color: black; text-transform:none; cursor:pointer">${psm.Process.ProcessName}</p></li>
+            </ul>
+          </md-card>
+        </div>
+
+        <!-- SubProcess Sequence-->
+        <div class ="col s2" style="margin-left:40px">
+          <b>Subprocess Sequence</b>
+          <md-card >
+            <ul style="height:500px;">
+              <li class.bind = "spsm.IsSelected ? 'highlight' : '' " click.delegate="selectSubProcess(spsm.SubProcess.SubProcessId)" repeat.for="spsm of subProcessModels" style="margin-bottom: 4px;"><p style="color: black; text-transform:none; cursor:pointer">${spsm.SubProcess.SubProcessName}</p></li>
+            </ul>
+          </md-card>
+        </div>
+
+        <!-- Textblock-->
+        <div class ="col s4" style="margin-left:40px">
+          <b>Text Block</b>
+          <md-card>
+            <textarea disabled.bind="!isEditable" id="ta1" value.bind="textBlock" class="materialize-textarea" rows="20" style="height:460px; border-bottom:none;"></textarea> 
+          </md-card>
+        </div>
+                
+      </div>
+
     </form>
   </div>
 </template>

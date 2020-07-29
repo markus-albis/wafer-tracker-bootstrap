@@ -1,6 +1,6 @@
 /**
-* The view for the products section of the master data module.  Will contain either
-* the product list or a single product item for editing.
+* The view for the fab spec section of the editors module.  Will contain either
+* the fab spec list or a single fab spec for editing.
 */
 export class FabSpecPage {
   configureRouter(config, router) {

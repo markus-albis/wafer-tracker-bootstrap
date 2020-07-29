@@ -13,10 +13,14 @@ export class SubProcessItem extends ItemViewModel {
   }
 
   get title() {
+    return `SubProcess Editor`;
+  }
+
+  get item() {
     if (this.entity.SubProcessId <= 0) {
       return 'New SubProcess';
     }
-    return `SubProcess #${this.entity.SubProcessId}`;
+    return `SubProcess: ${this.entity.SubProcessName}`;
   }
 
   get PrintText() {

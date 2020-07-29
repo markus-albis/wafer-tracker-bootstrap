@@ -13,6 +13,16 @@ export class DataService {
     return this.manager.executeQuery(query);
   }
 
+  getFabSpecHistories() {
+    var query = breeze.EntityQuery.from("FabSpecHistories");
+    return this.manager.executeQuery(query);
+  }
+
+  getFabSpecStates() {
+    var query = breeze.EntityQuery.from("FabSpecStates");
+    return this.manager.executeQuery(query);
+  }
+
   getFailureCategories() {
     var query = breeze.EntityQuery.from("FailureCategories");
     return this.manager.executeQuery(query);
@@ -33,13 +43,38 @@ export class DataService {
     return this.manager.executeQuery(query);
   }
 
+  getProcessSequences() {
+    var query = breeze.EntityQuery.from("ProcessSequences");
+    return this.manager.executeQuery(query);
+  }
+
   getProducts() {
     var query = breeze.EntityQuery.from("Products");
     return this.manager.executeQuery(query);
   }
 
+  getProductOwners() {
+    var query = breeze.EntityQuery.from("ProductOwners");
+    return this.manager.executeQuery(query);
+  }
+
   getSubProcesses() {
     var query = breeze.EntityQuery.from("SubProcesses");
+    return this.manager.executeQuery(query);
+  }
+
+  getSubProcessSequences() {
+    var query = breeze.EntityQuery.from("SubProcessSequences");
+    return this.manager.executeQuery(query);
+  }
+
+  getTextBlocks() {
+    var query = breeze.EntityQuery.from("TextBlocks");
+    return this.manager.executeQuery(query);
+  }
+
+  getTextBlockFabSpecs() {
+    var query = breeze.EntityQuery.from("TextBlockFabSpecs");
     return this.manager.executeQuery(query);
   }
 

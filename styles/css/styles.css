@@ -64,6 +64,11 @@ main {
     opacity: 0.5;
 }
 
+.highlight {
+  background-color: #e8eaf6;
+  font-weight: bold;
+}
+
 /* Chart
 -------- */
 
