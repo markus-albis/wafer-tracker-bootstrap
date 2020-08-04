@@ -83,7 +83,6 @@ export class FabSpecItem extends ItemViewModel {
           if (this.textBlock === "") {                // No text block found => display default text
             this.textBlock = firstSubProcessModel.SubProcess.DefaultText;
             this.isEditable = false;                // Default text is not editable here
-            console.log("Default text block;", this.textBlock);
           } 
 
         });
